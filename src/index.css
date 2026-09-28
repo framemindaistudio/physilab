@@ -1,0 +1,261 @@
+@import 'tailwindcss';
+
+/*
+  PHYSILAB design tokens.
+  Light theme = "graph paper": the lab notebook page an engineering student plots on.
+  Dark theme  = "darkroom": the optics lab with the room lights off.
+  Prussian blue is the ink of theory (fits, formulas, navigation);
+  sodium amber (589 nm) marks anything that was measured.
+*/
+:root {
+  --paper: #f3f5f2;
+  --panel: #ffffff;
+  --panel-2: #eaefec;
+  --grid: #dae5e1;
+  --grid-major: #c3d5cf;
+  --ink: #16202b;
+  --ink-2: #4a5a66;
+  --ink-3: #7b8a93;
+  --line: #d3ddd9;
+  --prussian: #1d4e89;
+  --prussian-strong: #143a68;
+  --prussian-soft: #dfe8f3;
+  --sodium: #d98309;
+  --sodium-strong: #b36a00;
+  --sodium-soft: #fcecd2;
+  --ok: #2c7a4b;
+  --ok-soft: #dcefe3;
+  --bad: #b3342b;
+  --bad-soft: #f7e0dd;
+  --canvas-bg: #fbfcfb;
+  --shadow: 0 1px 0 rgb(22 32 43 / 0.04), 0 1px 3px rgb(22 32 43 / 0.06);
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --paper: #0e181f;
+    --panel: #132029;
+    --panel-2: #192a34;
+    --grid: #16252e;
+    --grid-major: #1e323d;
+    --ink: #dbe5e2;
+    --ink-2: #9fb0b4;
+    --ink-3: #6c8087;
+    --line: #243b46;
+    --prussian: #7fb3ef;
+    --prussian-strong: #a6cbf6;
+    --prussian-soft: #1a3150;
+    --sodium: #f4a93c;
+    --sodium-strong: #ffc46e;
+    --sodium-soft: #3a2a13;
+    --ok: #62c28e;
+    --ok-soft: #173427;
+    --bad: #f07a6f;
+    --bad-soft: #3d1c1a;
+    --canvas-bg: #0b141a;
+    --shadow: 0 1px 0 rgb(0 0 0 / 0.2), 0 2px 6px rgb(0 0 0 / 0.25);
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme='dark'] {
+  --paper: #0e181f;
+  --panel: #132029;
+  --panel-2: #192a34;
+  --grid: #16252e;
+  --grid-major: #1e323d;
+  --ink: #dbe5e2;
+  --ink-2: #9fb0b4;
+  --ink-3: #6c8087;
+  --line: #243b46;
+  --prussian: #7fb3ef;
+  --prussian-strong: #a6cbf6;
+  --prussian-soft: #1a3150;
+  --sodium: #f4a93c;
+  --sodium-strong: #ffc46e;
+  --sodium-soft: #3a2a13;
+  --ok: #62c28e;
+  --ok-soft: #173427;
+  --bad: #f07a6f;
+  --bad-soft: #3d1c1a;
+  --canvas-bg: #0b141a;
+  --shadow: 0 1px 0 rgb(0 0 0 / 0.2), 0 2px 6px rgb(0 0 0 / 0.25);
+  color-scheme: dark;
+}
+
+@theme {
+  --font-display: 'Bricolage Grotesque Variable', 'IBM Plex Sans', system-ui, sans-serif;
+  --font-sans: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'Cascadia Mono', monospace;
+
+  --color-paper: var(--paper);
+  --color-panel: var(--panel);
+  --color-panel-2: var(--panel-2);
+  --color-grid: var(--grid);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-line: var(--line);
+  --color-prussian: var(--prussian);
+  --color-prussian-strong: var(--prussian-strong);
+  --color-prussian-soft: var(--prussian-soft);
+  --color-sodium: var(--sodium);
+  --color-sodium-strong: var(--sodium-strong);
+  --color-sodium-soft: var(--sodium-soft);
+  --color-ok: var(--ok);
+  --color-ok-soft: var(--ok-soft);
+  --color-bad: var(--bad);
+  --color-bad-soft: var(--bad-soft);
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    margin: 0;
+    background-color: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection {
+    background: var(--sodium-soft);
+  }
+  :focus-visible {
+    outline: 2px solid var(--prussian);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  button {
+    cursor: pointer;
+  }
+  button:disabled {
+    cursor: not-allowed;
+  }
+}
+
+@layer components {
+  /* Millimetre graph paper: 8px minor squares, 40px major squares. */
+  .graph-paper {
+    background-color: var(--paper);
+    background-image:
+      linear-gradient(var(--grid-major) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-major) 1px, transparent 1px),
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size:
+      40px 40px,
+      40px 40px,
+      8px 8px,
+      8px 8px;
+    background-position: -1px -1px;
+  }
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+  }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+  .readout {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+  .range {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 22px;
+    background: transparent;
+  }
+  .range::-webkit-slider-runnable-track {
+    height: 4px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, var(--prussian) var(--fill, 50%), var(--line) var(--fill, 50%));
+  }
+  .range::-moz-range-track {
+    height: 4px;
+    border-radius: 2px;
+    background: var(--line);
+  }
+  .range::-moz-range-progress {
+    height: 4px;
+    border-radius: 2px;
+    background: var(--prussian);
+  }
+  .range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    margin-top: -6px;
+    border-radius: 50%;
+    background: var(--panel);
+    border: 2px solid var(--prussian);
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.2);
+  }
+  .range::-moz-range-thumb {
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: var(--panel);
+    border: 2px solid var(--prussian);
+  }
+  .prose-lab p {
+    margin: 0 0 0.8em;
+  }
+  .prose-lab p:last-child {
+    margin-bottom: 0;
+  }
+  .katex {
+    font-size: 1.08em;
+  }
+  .katex-display {
+    margin: 0.4em 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 2px 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Lab report printing: only the report sheet is printed. */
+@media print {
+  @page {
+    size: A4;
+    margin: 14mm;
+  }
+  body {
+    background: #fff !important;
+    color: #000;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .print-sheet {
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+    max-width: none !important;
+  }
+  .print-avoid-break {
+    break-inside: avoid;
+  }
+}
