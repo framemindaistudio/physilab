@@ -47,6 +47,7 @@ export default function Dashboard() {
             Welcome,{' '}
             <input
               aria-label="Your name"
+              data-guide="dash-name"
               value={state.studentName}
               placeholder="Student"
               onChange={(e) => lab.setStudentName(e.target.value)}
@@ -60,7 +61,7 @@ export default function Dashboard() {
         </ButtonLink>
       </header>
 
-      <section className="grid grid-cols-2 gap-3 lg:grid-cols-4" aria-label="Summary">
+      <section data-guide="dash-stats" className="grid grid-cols-2 gap-3 lg:grid-cols-4" aria-label="Summary">
         <Stat icon={<FlaskConical size={14} />} label="Experiments completed" value={`${completed} / ${total}`} sub={`${EXPERIMENTS.length} available now, ${PLANNED.length} planned`} />
         <Stat icon={<Clock size={14} />} label="Lab time" value={time >= 3600000 ? `${(time / 3600000).toFixed(1)} h` : formatDuration(time)} sub="Time with an experiment open" />
         <Stat icon={<GraduationCap size={14} />} label="Viva score" value={vivaAvg === undefined ? '—' : `${Math.round(vivaAvg * 100)}%`} sub={vivaBests.length ? `Best attempts, ${vivaBests.length} experiment${vivaBests.length > 1 ? 's' : ''}` : 'No viva taken yet'} />
@@ -68,7 +69,7 @@ export default function Dashboard() {
       </section>
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_380px]">
-        <section className="panel p-5 sm:p-6" aria-labelledby="areas-heading">
+        <section data-guide="dash-areas" className="panel p-5 sm:p-6" aria-labelledby="areas-heading">
           <h2 id="areas-heading" className="mb-4 font-display text-lg font-semibold tracking-tight">
             Progress by area
           </h2>
@@ -87,7 +88,7 @@ export default function Dashboard() {
           </ul>
         </section>
 
-        <section className="panel flex flex-col p-5 sm:p-6" aria-labelledby="continue-heading">
+        <section data-guide="dash-continue" className="panel flex flex-col p-5 sm:p-6" aria-labelledby="continue-heading">
           <p className="eyebrow mb-3" id="continue-heading">
             {continueWith ? (state.lastExperimentId === continueWith.id ? 'Continue experiment' : 'Start next') : 'All done'}
           </p>
@@ -118,7 +119,7 @@ export default function Dashboard() {
         </section>
       </div>
 
-      <section aria-labelledby="exp-heading">
+      <section data-guide="dash-list" aria-labelledby="exp-heading">
         <h2 id="exp-heading" className="mb-3 font-display text-lg font-semibold tracking-tight">
           Your experiments
         </h2>

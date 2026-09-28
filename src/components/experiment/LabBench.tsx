@@ -57,10 +57,10 @@ export function LabBench({ module: m, showTable = true }: { module: ExperimentMo
     <div className="space-y-5">
       <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_272px] xl:grid-cols-[minmax(0,1fr)_300px]">
         {/* Apparatus */}
-        <section className="panel overflow-hidden" aria-label="Virtual apparatus">
+        <section data-guide="bench-apparatus" className="panel overflow-hidden" aria-label="Virtual apparatus">
           <div className="flex flex-wrap items-center justify-between gap-2 border-b border-line px-4 py-2.5">
             <p className="eyebrow">Virtual apparatus</p>
-            <div className="flex items-center gap-2">
+            <div data-guide="bench-controls" className="flex items-center gap-2">
               <Button size="sm" variant={running ? 'secondary' : 'primary'} onClick={() => setRunning((r) => !r)}>
                 {running ? <Pause size={14} /> : <Play size={14} />}
                 {running ? 'Pause' : 'Start'}
@@ -100,7 +100,7 @@ export function LabBench({ module: m, showTable = true }: { module: ExperimentMo
         </section>
 
         {/* Controls */}
-        <aside className="panel flex flex-col" aria-label="Parameters">
+        <aside data-guide="bench-params" className="panel flex flex-col" aria-label="Parameters">
           <div className="border-b border-line px-4 py-2.5">
             <p className="eyebrow">Parameters</p>
           </div>
@@ -108,7 +108,7 @@ export function LabBench({ module: m, showTable = true }: { module: ExperimentMo
             <ParameterPanel defs={m.parameters} params={params} onChange={change} />
           </div>
           <div className="space-y-3 border-t border-line px-4 py-4">
-            <div className="flex items-center justify-between gap-3">
+            <div data-guide="bench-noise" className="flex items-center justify-between gap-3">
               <label htmlFor={`noise-${m.id}`} className="text-[13px] text-ink-2">
                 Instrument error
                 <span className="block text-xs text-ink-3">Reaction time, least count, meter noise</span>
@@ -116,7 +116,7 @@ export function LabBench({ module: m, showTable = true }: { module: ExperimentMo
               <Switch id={`noise-${m.id}`} checked={noise} onChange={(v) => lab.setNoise(v)} />
             </div>
             {showTable && (
-              <Button variant="measure" className="w-full" onClick={measure}>
+              <Button variant="measure" className="w-full" onClick={measure} data-guide="bench-measure">
                 <Crosshair size={16} /> {m.observation.measureLabel}
               </Button>
             )}
@@ -138,7 +138,7 @@ export function LabBench({ module: m, showTable = true }: { module: ExperimentMo
       </div>
 
       {/* Live readouts */}
-      <section aria-label="Readouts" className="grid grid-cols-2 gap-3 md:grid-cols-4">
+      <section data-guide="bench-readouts" aria-label="Readouts" className="grid grid-cols-2 gap-3 md:grid-cols-4">
         {readouts.map((r) => (
           <div key={r.label} className="panel px-4 py-3">
             <p className="text-xs text-ink-3">{r.label}</p>
@@ -151,7 +151,7 @@ export function LabBench({ module: m, showTable = true }: { module: ExperimentMo
       </section>
 
       {showTable && (
-        <section className="panel p-4 sm:p-5" aria-labelledby={`obs-${m.id}`}>
+        <section data-guide="bench-table" className="panel p-4 sm:p-5" aria-labelledby={`obs-${m.id}`}>
           <div className="mb-3 flex flex-wrap items-baseline justify-between gap-2">
             <h2 id={`obs-${m.id}`} className="font-display text-lg font-semibold tracking-tight">
               Observation table

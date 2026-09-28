@@ -42,6 +42,14 @@ Aim & theory → Lab bench → Analysis → Viva → Report
 Dashboard · Experiments · Virtual Lab (free-play bench) · Theory (searchable formula sheet) ·
 My Lab Notebook (all readings, CSV export) · Viva · Progress · About
 
+## First-time guides
+
+The first visit opens a short welcome guide (with **Skip all guides**), and every section — including each
+experiment stage — shows its own spotlight guide the first time it is opened. Every guide can be skipped
+(**Skip guide**, ✕ or Esc), stepped with the arrow keys, and replayed with the **Page guide** button.
+Guides can be switched off or reset on the About page. Tours live in `src/guide/tours.ts`; a step points
+at an element marked `data-guide="…"`, and steps whose element is not on screen are left out automatically.
+
 ## Tech stack
 
 - React 19 + TypeScript + Vite
@@ -58,7 +66,7 @@ src/
 ├── components/
 │   ├── ui/            Button, Formula (KaTeX), meters, tags
 │   ├── layout/        App shell, navigation, theme switch
-│   ├── simulation/    Parameter panel, canvas drawing helpers, hero pendulum wave
+│   ├── simulation/    Parameter panel, canvas drawing helpers, home-page photoelectric demo
 │   ├── experiment/    LabBench, ObservationTable, AnalysisView, VivaQuiz, LabReport, TheoryView
 │   └── charts/        FitChart (least-squares graph)
 ├── experiments/
@@ -69,6 +77,7 @@ src/
 │   ├── mechanics/  optics/  electromagnetism/  modern/
 │   ├── constants.ts   CODATA values
 │   └── numerics.ts    RK4, AGM, bisection
+├── guide/           First-time guides: tours per section, spotlight overlay, seen/off state
 ├── pages/  store/  hooks/  data/  utils/  types/
 ```
 
@@ -95,6 +104,10 @@ Production build: `npm run build` (output in `dist/`).
 Import the repository in Vercel. The framework preset is detected as **Vite**; build command `npm run build`,
 output directory `dist`. `vercel.json` rewrites all routes to `index.html` so deep links such as
 `/experiments/faraday/lab` work. No environment variables are needed.
+
+## Credits
+
+Made by: **Prathiksha D** (1st year Engineering Student)
 
 ## Roadmap
 

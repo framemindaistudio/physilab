@@ -32,12 +32,12 @@ export default function Notebook() {
         </EmptyState>
       ) : (
         <div className="space-y-8">
-          {withRows.map((m) => {
+          {withRows.map((m, i) => {
             const r = state.experiments[m.id]
             const a = computeAnalysis(m, r.rows)
             const main = a.result?.results[0]
             return (
-              <section key={m.id} className="panel p-5 sm:p-6" aria-labelledby={`nb-${m.id}`}>
+              <section key={m.id} data-guide={i === 0 ? 'notebook-card' : undefined} className="panel p-5 sm:p-6" aria-labelledby={`nb-${m.id}`}>
                 <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
                   <div>
                     <p className="readout text-xs text-ink-3">
@@ -55,7 +55,7 @@ export default function Notebook() {
                       </p>
                     )}
                   </div>
-                  <div className="flex flex-wrap gap-2">
+                  <div data-guide={i === 0 ? 'notebook-actions' : undefined} className="flex flex-wrap gap-2">
                     <Button size="sm" variant="ghost" onClick={() => exportCsv(m, r.rows)}>
                       <Download size={14} /> CSV
                     </Button>
@@ -67,7 +67,9 @@ export default function Notebook() {
                     </ButtonLink>
                   </div>
                 </div>
-                <ObservationTable module={m} rows={r.rows} onRemove={(id) => lab.removeRow(m.id, id)} onClear={() => lab.clearRows(m.id)} />
+                <div data-guide={i === 0 ? 'notebook-table' : undefined}>
+                  <ObservationTable module={m} rows={r.rows} onRemove={(id) => lab.removeRow(m.id, id)} onClear={() => lab.clearRows(m.id)} />
+                </div>
               </section>
             )
           })}

@@ -6,7 +6,7 @@ import { timeOscillations } from '@/physics/mechanics/pendulum'
 import { rad } from '@/physics/numerics'
 import { ButtonLink } from '@/components/ui/Button'
 import { Formula } from '@/components/ui/Formula'
-import { PendulumWave } from '@/components/simulation/PendulumWave'
+import { PhotoelectricHero, usePrefersReducedMotion } from '@/components/simulation/PhotoelectricHero'
 import { ExperimentCard } from '@/components/experiment/ExperimentCard'
 import { fixed } from '@/utils/format'
 
@@ -19,6 +19,7 @@ const SEQUENCE = [
 ]
 
 export default function Home() {
+  const reducedMotion = usePrefersReducedMotion()
   // A real reading from the pendulum model, computed when the page loads.
   const proof = useMemo(() => {
     const L = 1.0
@@ -43,7 +44,7 @@ export default function Home() {
             <p className="mt-5 max-w-lg text-[17px] leading-relaxed text-ink-2">
               An interactive virtual laboratory for performing, analysing and understanding Engineering Physics experiments.
             </p>
-            <div className="mt-8 flex flex-wrap gap-3">
+            <div data-guide="home-cta" className="mt-8 flex flex-wrap gap-3">
               <ButtonLink to="/experiments" variant="primary" className="h-11 px-5">
                 Explore Experiments <ArrowRight size={16} />
               </ButtonLink>
@@ -52,10 +53,12 @@ export default function Home() {
               </ButtonLink>
             </div>
           </div>
-          <figure className="panel overflow-hidden bg-[var(--canvas-bg)]/80 backdrop-blur-[1px]">
-            <PendulumWave className="block h-[340px] w-full sm:h-[420px]" />
+          <figure data-guide="home-demo" className="panel overflow-hidden bg-[var(--canvas-bg)]/80 backdrop-blur-[1px]">
+            <PhotoelectricHero />
             <figcaption className="border-t border-line px-4 py-2.5 text-xs text-ink-3">
-              Fifteen pendulums whose lengths make them complete 20, 21 … 34 swings in the same 60 seconds. The pattern is the period law, running live.
+              {reducedMotion
+                ? 'A sodium photocell under ultraviolet light, shown still because your device is set to reduce motion. Above 525 nm no electrons would leave the metal, however bright the light — Einstein’s photons, on the same model as Experiment 06.'
+                : 'A sodium photocell lit by light swept from ultraviolet to orange. Past 525 nm the electrons stop, however bright the light — Einstein’s photons, running live on the same model as Experiment 06.'}
             </figcaption>
           </figure>
         </div>
@@ -75,7 +78,7 @@ export default function Home() {
               Full catalogue <ArrowRight size={14} />
             </ButtonLink>
           </div>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div data-guide="home-experiments" className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {EXPERIMENTS.map((m) => (
               <ExperimentCard key={m.id} module={m} />
             ))}
@@ -93,7 +96,7 @@ export default function Home() {
               The same five stages, in the same order, whether you are timing a pendulum or measuring Planck’s constant.
             </p>
           </div>
-          <ol className="grid gap-px overflow-hidden rounded-xl border border-line bg-line sm:grid-cols-5">
+          <ol data-guide="home-sequence" className="grid gap-px overflow-hidden rounded-xl border border-line bg-line sm:grid-cols-5">
             {SEQUENCE.map((s, i) => (
               <li key={s.title} className="bg-panel p-5">
                 <span className="readout text-sm text-sodium-strong">{String(i + 1).padStart(2, '0')}</span>
@@ -105,7 +108,7 @@ export default function Home() {
         </section>
 
         {/* The rule */}
-        <section aria-labelledby="rule-heading" className="panel grid gap-8 p-6 sm:p-10 lg:grid-cols-2">
+        <section data-guide="home-rule" aria-labelledby="rule-heading" className="panel grid gap-8 p-6 sm:p-10 lg:grid-cols-2">
           <div>
             <p className="eyebrow mb-2">The rule behind every simulation</p>
             <h2 id="rule-heading" className="font-display text-3xl font-bold tracking-tight">

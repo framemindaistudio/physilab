@@ -49,7 +49,7 @@ export function AnalysisView({ module: m }: { module: ExperimentModule }) {
       )}
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_340px]">
-        <section className="panel p-4 sm:p-5">
+        <section data-guide="analysis-graph" className="panel p-4 sm:p-5">
           <SectionTitle
             aside={
               fit && (
@@ -71,7 +71,7 @@ export function AnalysisView({ module: m }: { module: ExperimentModule }) {
           )}
         </section>
 
-        <section className="space-y-3">
+        <section data-guide="analysis-results" className="space-y-3">
           <p className="eyebrow">Result</p>
           {result.results.map((r) => (
             <ResultCard key={r.label} r={r} />
@@ -90,7 +90,7 @@ export function AnalysisView({ module: m }: { module: ExperimentModule }) {
         </div>
       )}
 
-      <section className="panel p-5 sm:p-6">
+      <section data-guide="analysis-calcs" className="panel p-5 sm:p-6">
         <SectionTitle>Calculations</SectionTitle>
         <ol className="divide-y divide-line">
           {result.calculations.map((c, i) => (
@@ -107,7 +107,7 @@ export function AnalysisView({ module: m }: { module: ExperimentModule }) {
         </ol>
       </section>
 
-      <section className="rounded-[10px] border border-prussian/30 bg-prussian-soft/60 p-5 sm:p-6">
+      <section data-guide="analysis-conclusion" className="rounded-[10px] border border-prussian/30 bg-prussian-soft/60 p-5 sm:p-6">
         <p className="eyebrow mb-2 text-prussian">Conclusion</p>
         <p className="max-w-[75ch] text-[15.5px] leading-relaxed text-ink">{result.conclusion}</p>
       </section>

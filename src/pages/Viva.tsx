@@ -16,8 +16,8 @@ export default function Viva() {
       <PageHeader eyebrow="Viva" title="Viva voce practice">
         {totalQ} questions across {EXPERIMENTS.length} experiments, each with an explanation. Your best score for each set is kept.
       </PageHeader>
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-        {EXPERIMENTS.map((m) => {
+      <div data-guide="viva-cards" className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+        {EXPERIMENTS.map((m, i) => {
           const r = state.experiments[m.id]
           const best = r ? bestViva(r) : undefined
           return (
@@ -32,7 +32,7 @@ export default function Viva() {
                 <Meter value={best ?? 0} tone={best !== undefined && best >= 0.7 ? 'ok' : 'sodium'} />
                 <span className="readout shrink-0 text-xs text-ink-2">{best === undefined ? 'not taken' : `best ${Math.round(best * 100)}%`}</span>
               </div>
-              <ButtonLink to={`/experiments/${m.id}/viva`} variant={best === undefined ? 'primary' : 'secondary'} className="mt-5 self-start" size="sm">
+              <ButtonLink data-guide={i === 0 ? 'viva-start' : undefined} to={`/experiments/${m.id}/viva`} variant={best === undefined ? 'primary' : 'secondary'} className="mt-5 self-start" size="sm">
                 <GraduationCap size={14} /> {best === undefined ? 'Start viva' : 'Retake viva'}
               </ButtonLink>
             </article>

@@ -65,7 +65,7 @@ export default function ExperimentPage() {
         </header>
 
         {/* The experiment sequence: theory → bench → analysis → viva → report */}
-        <nav aria-label="Experiment stages" className="mb-6 overflow-x-auto">
+        <nav data-guide="stage-nav" aria-label="Experiment stages" className="mb-6 overflow-x-auto">
           <ol className="flex min-w-max gap-1 rounded-xl border border-line bg-panel p-1">
             {STAGES.map((s, i) => (
               <li key={s.id} className="flex-1">
@@ -108,7 +108,7 @@ export default function ExperimentPage() {
           <span />
         )}
         {next && (
-          <ButtonLink to={href(next.id)} variant="secondary">
+          <ButtonLink to={href(next.id)} variant="secondary" data-guide="stage-next">
             {next.label} <ArrowRight size={14} />
           </ButtonLink>
         )}

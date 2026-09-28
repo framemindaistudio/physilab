@@ -14,7 +14,7 @@ export function TheoryView({ module: m }: { module: ExperimentModule }) {
   return (
     <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
       <div className="space-y-6">
-        <section className="panel p-5 sm:p-6">
+        <section data-guide="theory-aim" className="panel p-5 sm:p-6">
           <p className="eyebrow mb-2">Aim</p>
           <p className="text-[17px] leading-relaxed text-ink">{m.aim}</p>
           <p className="eyebrow mb-2 mt-6">Objectives</p>
@@ -28,8 +28,8 @@ export function TheoryView({ module: m }: { module: ExperimentModule }) {
           </ul>
         </section>
 
-        {m.theory.map((s) => (
-          <section key={s.heading} className="panel p-5 sm:p-6">
+        {m.theory.map((s, i) => (
+          <section key={s.heading} data-guide={i === 0 ? 'theory-section' : undefined} className="panel p-5 sm:p-6">
             <SectionTitle>{s.heading}</SectionTitle>
             <div className="prose-lab max-w-[68ch] text-ink-2">
               {s.body.map((p) => (
@@ -72,7 +72,7 @@ export function TheoryView({ module: m }: { module: ExperimentModule }) {
       </div>
 
       <aside className="space-y-6">
-        <section className="panel p-5">
+        <section data-guide="theory-variables" className="panel p-5">
           <p className="eyebrow mb-3">Variables</p>
           <ul className="space-y-2.5">
             {m.variables.map((v) => (
@@ -99,7 +99,7 @@ export function TheoryView({ module: m }: { module: ExperimentModule }) {
             ))}
           </ul>
         </section>
-        <section className="rounded-[10px] border border-prussian/30 bg-prussian-soft/60 p-5">
+        <section data-guide="theory-model" className="rounded-[10px] border border-prussian/30 bg-prussian-soft/60 p-5">
           <div className="mb-3 flex items-center gap-2 text-prussian">
             <Cpu size={16} />
             <p className="text-sm font-semibold">How this simulation is built</p>

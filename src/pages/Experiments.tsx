@@ -17,7 +17,7 @@ export default function Experiments() {
         Each experiment follows the same sequence: aim and theory, lab bench, analysis, viva and report.
       </PageHeader>
 
-      <div className="mb-6 flex flex-wrap gap-2" role="tablist" aria-label="Filter by area">
+      <div data-guide="exp-filters" className="mb-6 flex flex-wrap gap-2" role="tablist" aria-label="Filter by area">
         {[{ id: 'all' as const, label: 'All areas' }, ...CATEGORIES].map((c) => (
           <button
             key={c.id}
@@ -36,7 +36,7 @@ export default function Experiments() {
       </div>
 
       {list.length > 0 ? (
-        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+        <div data-guide="exp-grid" className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
           {list.map((m) => (
             <ExperimentCard key={m.id} module={m} />
           ))}
@@ -48,7 +48,7 @@ export default function Experiments() {
       )}
 
       {planned.length > 0 && (
-        <section className="mt-14" aria-labelledby="planned-heading">
+        <section data-guide="exp-planned" className="mt-14" aria-labelledby="planned-heading">
           <div className="mb-4 flex items-baseline justify-between gap-3">
             <h2 id="planned-heading" className="font-display text-xl font-semibold tracking-tight">
               Planned for the next phases

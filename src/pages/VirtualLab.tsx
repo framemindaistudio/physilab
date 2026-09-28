@@ -24,12 +24,12 @@ export default function VirtualLab() {
             Pick any apparatus and experiment freely. Readings you take here go into the same notebook as the guided experiment.
           </p>
         </div>
-        <ButtonLink to={`/experiments/${m.id}/analysis`} variant="secondary">
+        <ButtonLink to={`/experiments/${m.id}/analysis`} variant="secondary" data-guide="vlab-analyse">
           Analyse {m.title} readings <ArrowRight size={14} />
         </ButtonLink>
       </header>
 
-      <nav aria-label="Choose apparatus" className="mb-6 overflow-x-auto">
+      <nav data-guide="vlab-picker" aria-label="Choose apparatus" className="mb-6 overflow-x-auto">
         <ul className="flex min-w-max gap-2">
           {EXPERIMENTS.map((e) => (
             <li key={e.id}>

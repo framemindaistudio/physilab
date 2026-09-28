@@ -27,7 +27,7 @@ export default function Theory() {
         The theory behind every experiment in one place. Each formula here is the one the simulation actually computes.
       </PageHeader>
 
-      <div className="relative mb-8 max-w-md">
+      <div data-guide="theory-search" className="relative mb-8 max-w-md">
         <Search size={16} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-ink-3" />
         <input
           type="search"
@@ -42,7 +42,7 @@ export default function Theory() {
       {items.length === 0 && <p className="text-sm text-ink-2">Nothing matches “{q}”. Try a quantity such as “period” or “wavelength”.</p>}
 
       <div className="space-y-12">
-        {items.map(({ m, sections }) => (
+        {items.map(({ m, sections }, i) => (
           <section key={m.id} aria-labelledby={`th-${m.id}`}>
             <div className="mb-4 flex flex-wrap items-baseline justify-between gap-2 border-b border-line pb-2">
               <h2 id={`th-${m.id}`} className="font-display text-2xl font-bold tracking-tight">
@@ -57,8 +57,8 @@ export default function Theory() {
               </div>
             </div>
             <div className="grid gap-4 md:grid-cols-2">
-              {sections.map((s) => (
-                <article key={s.heading} className="panel p-5">
+              {sections.map((s, j) => (
+                <article key={s.heading} data-guide={i === 0 && j === 0 ? 'theory-page-section' : undefined} className="panel p-5">
                   <h3 className="font-display text-lg font-semibold tracking-tight">{s.heading}</h3>
                   <p className="mt-2 text-sm text-ink-2">{s.body[0]}</p>
                   {s.formulas && (

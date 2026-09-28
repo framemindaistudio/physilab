@@ -24,6 +24,7 @@ export default function Progress() {
           <Button
             variant="danger"
             size="sm"
+            data-guide="progress-reset"
             onClick={() => {
               if (window.confirm('Reset all readings, viva scores and lab time? This cannot be undone.')) lab.resetAll()
             }}
@@ -35,7 +36,7 @@ export default function Progress() {
         An experiment counts as complete once you have enough readings, have viewed the analysis, and have taken the viva.
       </PageHeader>
 
-      <section className="panel mb-6 p-5 sm:p-6">
+      <section data-guide="progress-overall" className="panel mb-6 p-5 sm:p-6">
         <div className="mb-2 flex items-baseline justify-between">
           <p className="font-display text-lg font-semibold tracking-tight">Overall</p>
           <p className="readout text-2xl text-ink">{Math.round(overall * 100)}%</p>
@@ -58,7 +59,7 @@ export default function Progress() {
         </div>
       </section>
 
-      <div className="panel overflow-x-auto">
+      <div data-guide="progress-table" className="panel overflow-x-auto">
         <table className="w-full min-w-[760px] text-sm">
           <caption className="sr-only">Progress by experiment and stage</caption>
           <thead>

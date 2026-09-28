@@ -29,9 +29,9 @@ export default function PhotoelectricApparatus({ params, running, speed, resetKe
   const V = Number(params.voltage)
   const colors = useThemeColors()
 
-  const sim = useRef({ electrons: [] as Electron[], photons: [] as Photon[], emitAcc: 0, photonAcc: 0 })
+  const sim = useRef({ electrons: [] as Electron[], photons: [] as Photon[], emitAcc: 0, photonAcc: 0, seeded: false })
   useEffect(() => {
-    sim.current = { electrons: [], photons: [], emitAcc: 0, photonAcc: 0 }
+    sim.current = { electrons: [], photons: [], emitAcc: 0, photonAcc: 0, seeded: false }
   }, [resetKey, params.metal])
 
   const canvasRef = useCanvasLoop(
@@ -42,6 +42,34 @@ export default function PhotoelectricApparatus({ params, running, speed, resetKe
       const KEmax = maxKineticEnergy(lambda, metal.phi)
       const Isat = saturationCurrent(lambda, intensityPct, metal.phi)
       const I = photocurrent(V, lambda, intensityPct, metal.phi)
+
+      // Probability that an electron is emitted towards the anode, matching the
+      // collection factor in photocurrent(): 0.7 at V ≤ 0, rising towards 1 for V > 0.
+      const pAxial = V >= 0 ? 1 - 0.3 * Math.exp(-V / 0.4) : 0.7
+
+      // ---- Still frame: while paused with an empty tube, show a representative snapshot ----
+      // drawn from the same energy distribution, so a paused (or reduced-motion) view is not blank.
+      if (dt === 0 && !s.seeded && s.electrons.length === 0 && Isat > 0) {
+        s.seeded = true
+        const n = Math.min(60, Math.round(6 * Isat))
+        for (let i = 0; i < n; i++) {
+          const stray = Math.random() > pAxial
+          const ke0 = Math.random() * KEmax
+          // Electrons that cannot reach the anode are only found short of their turning point.
+          const reach = V < 0 ? Math.min(1, ke0 / -V) : 1
+          const x = stray ? Math.random() * 0.25 : Math.random() * reach * 0.98
+          s.electrons.push({
+            x,
+            y: (Math.random() * 2 - 1) * 0.55,
+            ke0,
+            dir: !stray && reach < 1 && Math.random() < 0.5 ? -1 : 1,
+            stray,
+            vy: stray ? (Math.random() < 0.5 ? -1 : 1) * (0.6 + Math.random() * 0.6) : 0,
+          })
+        }
+        const photons = Math.round(intensityPct * 0.18)
+        for (let i = 0; i < photons; i++) s.photons.push({ s: (i + Math.random()) / Math.max(1, photons) })
+      }
 
       // ---- Particle update (same model the ammeter uses) ----
       if (dt > 0) {
@@ -56,9 +84,6 @@ export default function PhotoelectricApparatus({ params, running, speed, resetKe
         s.emitAcc += dt * 7 * Isat
         while (s.emitAcc >= 1) {
           s.emitAcc -= 1
-          // Probability that an electron is emitted towards the anode, matching the
-          // collection factor in photocurrent(): 0.7 at V ≤ 0, rising towards 1 for V > 0.
-          const pAxial = V >= 0 ? 1 - 0.3 * Math.exp(-V / 0.4) : 0.7
           const stray = Math.random() > pAxial
           s.electrons.push({
             x: 0,
@@ -89,11 +114,13 @@ export default function PhotoelectricApparatus({ params, running, speed, resetKe
       // ---- Drawing ----
       clear(ctx, w, h, c)
       graphPaper(ctx, w, h, c)
-      const wide = w > 620
+      // Side-by-side tube and I–V graph when there is room for the readouts beside the graph;
+      // otherwise stack tube, readouts and graph.
+      const wide = w > 460
       const tubeX = 20
       const tubeW = wide ? w * 0.56 : w - 40
       const tubeY = 70
-      const tubeH = wide ? h * 0.5 : h * 0.34
+      const tubeH = wide ? h * 0.5 : h * 0.3
       const catX = tubeX + 44
       const anX = tubeX + tubeW - 40
       const midY = tubeY + tubeH / 2
@@ -188,10 +215,10 @@ export default function PhotoelectricApparatus({ params, running, speed, resetKe
       label(ctx, '● turned back', tubeX + 120, infoY + 94, c.bad, { size: 10 })
 
       // I–V characteristic (right, or below on narrow screens)
-      const gx = wide ? tubeX + tubeW + 30 : tubeX + 170
-      const gy = wide ? tubeY : infoY - 14
-      const gw = wide ? w - gx - 18 : w - gx - 18
-      const gh = wide ? tubeH + 60 : h - gy - 20
+      const gx = wide ? tubeX + tubeW + 30 : tubeX
+      const gy = wide ? tubeY : infoY + 104
+      const gw = wide ? w - gx - 18 : w - 2 * tubeX
+      const gh = wide ? tubeH + 60 : h - gy - 12
       if (gw > 80 && gh > 60) {
         ctx.fillStyle = c.panel
         ctx.strokeStyle = c.line

@@ -2,6 +2,7 @@ import { useEffect, useState, type ReactNode } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 import {
   BookOpen,
+  CircleHelp,
   FlaskConical,
   Gauge,
   GraduationCap,
@@ -17,7 +18,10 @@ import {
   type LucideIcon,
 } from 'lucide-react'
 import { setTheme, useThemeChoice, type ThemeChoice } from '@/store/theme'
+import { useGuide } from '@/guide/GuideProvider'
+import { TOURS } from '@/guide/tours'
 import { cn } from '@/utils/cn'
+import { CreditFooter } from './CreditFooter'
 
 const NAV: { to: string; label: string; icon: LucideIcon; end?: boolean }[] = [
   { to: '/dashboard', label: 'Dashboard', icon: Gauge },
@@ -53,7 +57,7 @@ function ThemeSwitch() {
     { v: 'dark', icon: Moon, label: 'Dark theme' },
   ]
   return (
-    <div className="flex rounded-lg border border-line bg-panel p-0.5" role="radiogroup" aria-label="Colour theme">
+    <div data-guide="theme" className="flex rounded-lg border border-line bg-panel p-0.5" role="radiogroup" aria-label="Colour theme">
       {opts.map(({ v, icon: Icon, label }) => (
         <button
           key={v}
@@ -69,6 +73,39 @@ function ThemeSwitch() {
         </button>
       ))}
     </div>
+  )
+}
+
+/** Replays the first-time guide for the page that is open. */
+function GuideButton({ compact = false }: { compact?: boolean }) {
+  const { section, replay } = useGuide()
+  const available = !!(section && TOURS[section])
+  if (compact) {
+    return (
+      <button
+        type="button"
+        data-guide="guide-button"
+        onClick={replay}
+        disabled={!available}
+        className="grid h-9 w-9 place-items-center rounded-lg text-ink-2 hover:bg-panel-2 disabled:opacity-40"
+        aria-label="Show the guide for this page"
+        title="Page guide"
+      >
+        <CircleHelp size={19} />
+      </button>
+    )
+  }
+  return (
+    <button
+      type="button"
+      data-guide="guide-button"
+      onClick={replay}
+      disabled={!available}
+      className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-panel-2 hover:text-ink disabled:opacity-40"
+    >
+      <CircleHelp size={16} strokeWidth={1.8} />
+      Page guide
+    </button>
   )
 }
 
@@ -100,7 +137,12 @@ function NavItems({ onNavigate }: { onNavigate?: () => void }) {
 export function AppShell({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false)
   const { pathname } = useLocation()
+  const { open: guideOpen } = useGuide()
   useEffect(() => setOpen(false), [pathname])
+  // A guide spotlights the page, so the mobile menu must not sit on top of it.
+  useEffect(() => {
+    if (guideOpen) setOpen(false)
+  }, [guideOpen])
   const isHome = pathname === '/'
 
   return (
@@ -110,14 +152,15 @@ export function AppShell({ children }: { children: ReactNode }) {
       </a>
 
       {/* Desktop sidebar */}
-      <aside className="no-print sticky top-0 hidden h-screen flex-col border-r border-line bg-panel/80 px-3 py-5 backdrop-blur lg:flex">
+      <aside className="no-print sticky top-0 hidden h-screen flex-col overflow-y-auto border-r border-line bg-panel/80 px-3 py-5 backdrop-blur lg:flex">
         <NavLink to="/" className="mb-7 px-3" aria-label="PHYSILAB home">
           <Logo />
         </NavLink>
-        <nav aria-label="Main">
+        <nav aria-label="Main" data-guide="nav">
           <NavItems />
         </nav>
         <div className="mt-auto space-y-3 px-1">
+          <GuideButton />
           <ThemeSwitch />
           <p className="px-2 text-[11px] leading-snug text-ink-3">Virtual Physics Laboratory for Engineering Education</p>
         </div>
@@ -128,16 +171,20 @@ export function AppShell({ children }: { children: ReactNode }) {
         <NavLink to="/" aria-label="PHYSILAB home">
           <Logo />
         </NavLink>
-        <button
-          type="button"
-          onClick={() => setOpen((o) => !o)}
-          className="grid h-9 w-9 place-items-center rounded-lg text-ink-2 hover:bg-panel-2"
-          aria-expanded={open}
-          aria-controls="mobile-nav"
-          aria-label={open ? 'Close menu' : 'Open menu'}
-        >
-          {open ? <X size={20} /> : <Menu size={20} />}
-        </button>
+        <div className="flex items-center gap-1">
+          <GuideButton compact />
+          <button
+            type="button"
+            data-guide="nav"
+            onClick={() => setOpen((o) => !o)}
+            className="grid h-9 w-9 place-items-center rounded-lg text-ink-2 hover:bg-panel-2"
+            aria-expanded={open}
+            aria-controls="mobile-nav"
+            aria-label={open ? 'Close menu' : 'Open menu'}
+          >
+            {open ? <X size={20} /> : <Menu size={20} />}
+          </button>
+        </div>
       </header>
       {open && (
         <div id="mobile-nav" className="no-print fixed inset-x-0 top-14 z-30 border-b border-line bg-panel px-3 py-3 shadow-lg lg:hidden">
@@ -150,9 +197,12 @@ export function AppShell({ children }: { children: ReactNode }) {
         </div>
       )}
 
-      <main id="main" className={cn('min-w-0', isHome ? '' : 'mx-auto w-full max-w-[1240px] px-4 py-6 sm:px-6 lg:px-10 lg:py-10')}>
-        {children}
-      </main>
+      <div className="flex min-h-[calc(100vh-3.5rem)] min-w-0 flex-col lg:min-h-screen">
+        <main id="main" className={cn('min-w-0 flex-1', isHome ? '' : 'mx-auto w-full max-w-[1240px] px-4 py-6 sm:px-6 lg:px-10 lg:py-10')}>
+          {children}
+        </main>
+        <CreditFooter />
+      </div>
     </div>
   )
 }

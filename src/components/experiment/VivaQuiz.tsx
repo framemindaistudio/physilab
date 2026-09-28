@@ -95,8 +95,8 @@ export function VivaQuiz({ module: m }: { module: ExperimentModule }) {
           </p>
           <Meter value={index / qs.length} className="max-w-[160px]" />
         </div>
-        <h2 className="font-display text-xl font-semibold leading-snug tracking-tight text-ink sm:text-2xl">{q.q}</h2>
-        <fieldset className="mt-6 space-y-2.5" disabled={submitted}>
+        <h2 data-guide="viva-question" className="font-display text-xl font-semibold leading-snug tracking-tight text-ink sm:text-2xl">{q.q}</h2>
+        <fieldset data-guide="viva-options" className="mt-6 space-y-2.5" disabled={submitted}>
           <legend className="sr-only">Choose one answer</legend>
           {q.options.map((opt, i) => {
             const isSel = selected === i
@@ -148,7 +148,7 @@ export function VivaQuiz({ module: m }: { module: ExperimentModule }) {
         </div>
       </section>
 
-      <aside className="panel h-fit p-5">
+      <aside data-guide="viva-attempts" className="panel h-fit p-5">
         <p className="eyebrow mb-3">Previous attempts</p>
         {record.vivaAttempts.length === 0 ? (
           <p className="text-sm text-ink-3">None yet. Your score is saved when you finish.</p>
