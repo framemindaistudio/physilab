@@ -71,7 +71,7 @@ export default function Home() {
             <div>
               <p className="eyebrow mb-2">On the bench now</p>
               <h2 id="bench-heading" className="font-display text-3xl font-bold tracking-tight">
-                Six experiments, six kinds of physics
+                {EXPERIMENTS.length} experiments across six areas of physics
               </h2>
             </div>
             <ButtonLink to="/experiments" variant="ghost">

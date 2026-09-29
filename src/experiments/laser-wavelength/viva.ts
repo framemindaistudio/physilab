@@ -1,0 +1,12 @@
+import type { VivaQuestion } from '@/types/experiment'
+
+export const viva: VivaQuestion[] = [
+  { q: 'What does LASER stand for?', options: ['Light Amplified by Stimulated Emission of Radiation', 'Light Amplification by Stimulated Emission of Radiation', 'Linear Amplification of Spontaneous Emission', 'Light Absorption by Stimulated Energy Release'], answer: 1, explanation: 'Light Amplification by Stimulated Emission of Radiation.' },
+  { q: 'Which properties of laser light make this experiment easy?', options: ['It is white and diffuse', 'It is monochromatic, coherent and highly directional', 'It is polarised only', 'It is very hot'], answer: 1, explanation: 'A single wavelength in a narrow, coherent beam gives sharp, well-separated spots.' },
+  { q: 'How is the diffraction angle found from the screen?', options: ['θ = x·D', 'tan θ = x/D', 'sin θ = D/x', 'θ = D/x'], answer: 1, explanation: 'The n-th spot is at x from the centre on a screen D away, so tan θ = x/D.', topic: 'Diffraction of a laser beam by a grating' },
+  { q: 'Why measure the distance between the left and right spots (2x)?', options: ['It is larger', 'It avoids errors in locating the exact centre of the pattern', 'The right spot is brighter', 'To double the order'], answer: 1, explanation: 'Halving the left–right separation does not depend on where the centre is.', topic: 'Finding the wavelength' },
+  { q: 'If the grating is replaced by one with more lines per mm, the spots…', options: ['move closer', 'spread further apart', 'do not move', 'disappear'], answer: 1, explanation: 'Smaller d increases sin θ = nλ/d.', topic: 'Diffraction of a laser beam by a grating' },
+  { q: 'Moving the screen further away (larger D)…', options: ['changes the wavelength', 'spreads the spots but leaves θ unchanged', 'changes the order', 'has no effect on x'], answer: 1, explanation: 'θ depends only on λ and d; x = D tan θ grows with D.' },
+  { q: 'A green laser replaces a red one. The spots…', options: ['move outward', 'move inward', 'stay put', 'turn white'], answer: 1, explanation: 'Green has a shorter wavelength, so sin θ = nλ/d is smaller.' },
+  { q: 'Why must you never look into the laser?', options: ['It is too cold', 'Its concentrated, parallel beam can burn the retina', 'It is invisible', 'It causes diffraction in the eye'], answer: 1, explanation: 'The eye focuses the parallel beam to a tiny, intense spot on the retina.' },
+]

@@ -6,6 +6,7 @@ import { isCompleted, stageFraction } from '@/store/progress'
 import { categoryLabel } from '@/data/categories'
 import { Meter } from '@/components/ui/misc'
 import { ExperimentGlyph } from './ExperimentGlyph'
+import { inSyllabus, SYLLABUS } from '@/data/syllabus'
 
 export function ExperimentCard({ module: m }: { module: ExperimentModule }) {
   const record = useExperimentRecord(m.id)
@@ -20,7 +21,10 @@ export function ExperimentCard({ module: m }: { module: ExperimentModule }) {
         <div className="rounded-lg border border-line bg-[var(--canvas-bg)] p-1.5">
           <ExperimentGlyph id={m.id} size={48} />
         </div>
-        <span className="readout text-sm text-ink-3">{m.number}</span>
+        <span className="flex flex-col items-end gap-1">
+          <span className="readout text-sm text-ink-3">{m.number}</span>
+          {inSyllabus(m.id) && <span className="rounded bg-sodium-soft px-1.5 py-0.5 text-[10px] font-medium text-sodium-strong">{SYLLABUS.code}</span>}
+        </span>
       </div>
       <p className="eyebrow mt-4">{categoryLabel(m.category)}</p>
       <h3 className="mt-1 flex items-center gap-1.5 font-display text-xl font-semibold tracking-tight text-ink">

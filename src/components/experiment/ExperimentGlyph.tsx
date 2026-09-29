@@ -66,6 +66,167 @@ export function ExperimentGlyph({ id, size = 56 }: { id: string; size?: number }
           <path d="M20 58h24" stroke={ink} strokeOpacity=".4" />
         </svg>
       )
+    case 'newtons-rings':
+      return (
+        <svg {...common}>
+          {[4, 9, 13, 16.5, 19.5, 22.5, 25].map((r, i) => (
+            <circle key={r} cx="32" cy="32" r={r} stroke={i % 2 ? ink : mark} strokeWidth={i % 2 ? 1.2 : 2} strokeOpacity={1 - i * 0.08} />
+          ))}
+          <circle cx="32" cy="32" r="2" fill={ink} />
+        </svg>
+      )
+    case 'diffraction-grating':
+      return (
+        <svg {...common}>
+          <path d="M32 58V34" stroke={ink} strokeWidth="3" />
+          <path d="M22 34h20" stroke={ink} strokeWidth="3" />
+          <path d="M32 34 10 8M32 34l-14-26M32 34l14-26M32 34 54 8" stroke={mark} strokeWidth="1.8" />
+          <path d="M32 34V6" stroke={ink} strokeOpacity=".5" />
+        </svg>
+      )
+    case 'malus-law':
+      return (
+        <svg {...common}>
+          <ellipse cx="20" cy="32" rx="7" ry="20" stroke={ink} strokeWidth="1.8" />
+          <path d="M20 16v32" stroke={ink} strokeOpacity=".6" />
+          <ellipse cx="44" cy="32" rx="7" ry="20" stroke={ink} strokeWidth="1.8" />
+          <path d="M38 20l12 24" stroke={mark} strokeWidth="2" />
+          <path d="M4 32h10M28 32h8M52 32h8" stroke={mark} strokeWidth="2" strokeDasharray="2 3" />
+        </svg>
+      )
+    case 'sonometer':
+      return (
+        <svg {...common}>
+          <rect x="4" y="40" width="56" height="12" rx="2" fill={ink} fillOpacity=".25" />
+          <path d="M12 40 16 32l4 8M44 40l4-8 4 8" stroke={ink} strokeWidth="1.8" />
+          <path d="M16 32c8-14 24-14 32 0M16 32c8 14 24 14 32 0" stroke={mark} strokeWidth="1.8" />
+          <path d="M4 32h56" stroke={ink} strokeOpacity=".5" />
+        </svg>
+      )
+    case 'rc-circuit':
+      return (
+        <svg {...common}>
+          <path d="M8 14c6 0 10 30 48 34" stroke={mark} strokeWidth="2.2" />
+          <path d="M8 8v48h50" stroke={ink} strokeWidth="1.6" />
+          <path d="M26 22h12M26 27h12" stroke={ink} strokeWidth="2.4" />
+        </svg>
+      )
+    case 'planck-led':
+      return (
+        <svg {...common}>
+          {[
+            ['#c0392b', 12],
+            ['#e8930c', 24],
+            ['#2c7a4b', 36],
+            ['#1d4e89', 48],
+          ].map(([col, x]) => (
+            <g key={x as number}>
+              <path d={`M${x} 40v-14a6 6 0 0 1 12 0v14z`} fill={col as string} fillOpacity=".75" />
+              <path d={`M${(x as number) + 3} 40v12M${(x as number) + 9} 40v10`} stroke={ink} strokeWidth="1.5" />
+            </g>
+          ))}
+        </svg>
+      )
+    case 'band-gap':
+      return (
+        <svg {...common}>
+          <rect x="8" y="8" width="48" height="14" fill={ink} fillOpacity=".25" />
+          <rect x="8" y="42" width="48" height="14" fill={mark} fillOpacity=".35" />
+          <path d="M24 42V24M40 42V24" stroke={mark} strokeWidth="1.8" strokeDasharray="2 2" />
+          <circle cx="24" cy="18" r="3" fill={ink} />
+          <circle cx="40" cy="18" r="3" fill={ink} />
+        </svg>
+      )
+    case 'hall-effect':
+      return (
+        <svg {...common}>
+          <rect x="10" y="18" width="44" height="28" rx="3" stroke={ink} strokeWidth="1.8" />
+          <path d="M2 32h8M54 32h8" stroke={ink} strokeWidth="2" />
+          {[16, 26, 36, 46].map((x) => (
+            <circle key={x} cx={x} cy="42" r="2" fill={mark} />
+          ))}
+          <path d="M16 22h32" stroke={ink} strokeOpacity=".4" strokeDasharray="3 3" />
+          <path d="M32 6v8" stroke={mark} strokeWidth="2" />
+        </svg>
+      )
+    case 'fermi-energy':
+      return (
+        <svg {...common}>
+          <path d="M6 16h22c6 0 6 32 12 32h18" stroke={ink} strokeWidth="2" />
+          <path d="M6 16h22c2 0 3 4 4 12" stroke={mark} strokeWidth="2.4" />
+          <path d="M32 8v48" stroke={ink} strokeOpacity=".4" strokeDasharray="2 3" />
+          <path d="M6 56h52" stroke={ink} strokeOpacity=".5" />
+        </svg>
+      )
+    case 'laser-wavelength':
+      return (
+        <svg {...common}>
+          <rect x="4" y="27" width="14" height="10" rx="2" fill={ink} />
+          <path d="M18 32h10" stroke={mark} strokeWidth="2" />
+          <path d="M28 20v24" stroke={ink} strokeWidth="2.5" />
+          <path d="M28 32 58 32M28 32l30-14M28 32l30 14" stroke={mark} strokeWidth="1.3" strokeOpacity=".7" />
+          {[18, 32, 46].map((y) => (
+            <circle key={y} cx="58" cy={y} r="2.8" fill={mark} />
+          ))}
+        </svg>
+      )
+    case 'optical-fiber':
+      return (
+        <svg {...common}>
+          <path d="M4 44c14 0 18-24 32-24s18 12 24 12" stroke={ink} strokeWidth="9" strokeOpacity=".2" strokeLinecap="round" />
+          <path d="M4 44c14 0 18-24 32-24s18 12 24 12" stroke={ink} strokeWidth="2" />
+          <path d="M8 42l6-5 5 3 6-9 5 3 6-8 5 4 6-2 5 4 6-1" stroke={mark} strokeWidth="1.6" />
+        </svg>
+      )
+    case 'four-probe':
+      return (
+        <svg {...common}>
+          <rect x="6" y="40" width="52" height="10" rx="2" fill={ink} fillOpacity=".3" />
+          {[16, 26, 38, 48].map((x, i) => (
+            <path key={x} d={`M${x} 40V12`} stroke={i === 0 || i === 3 ? mark : ink} strokeWidth="2.6" />
+          ))}
+          <path d="M16 12h32" stroke={mark} strokeOpacity=".5" />
+        </svg>
+      )
+    case 'lcr-resonance':
+      return (
+        <svg {...common}>
+          <path d="M4 54c14 0 18-2 22-18s4-26 6-26 2 10 6 26 8 18 22 18" stroke={mark} strokeWidth="2.2" />
+          <path d="M4 56h56M4 56V6" stroke={ink} strokeOpacity=".5" />
+          <path d="M32 10v46" stroke={ink} strokeOpacity=".35" strokeDasharray="2 3" />
+        </svg>
+      )
+    case 'black-box':
+      return (
+        <svg {...common}>
+          <rect x="16" y="14" width="36" height="36" rx="5" fill={ink} />
+          <path d="M4 24h12M4 40h12" stroke={ink} strokeWidth="2" />
+          <text x="34" y="39" textAnchor="middle" fontSize="20" fontWeight="700" fill="var(--sodium)">?</text>
+        </svg>
+      )
+    case 'photodiode':
+      return (
+        <svg {...common}>
+          <path d="M22 22l16 10-16 10z" fill={ink} />
+          <path d="M40 20v24M8 32h14M40 32h16" stroke={ink} strokeWidth="2" />
+          <path d="M10 8l10 10M18 6l8 10" stroke={mark} strokeWidth="2" />
+          <path d="M20 18l0-5-4 1M26 16l0-5-4 1" stroke={mark} strokeWidth="1.5" />
+        </svg>
+      )
+    case 'dielectric-constant':
+      return (
+        <svg {...common}>
+          <rect x="12" y="8" width="5" height="48" fill={ink} />
+          <rect x="47" y="8" width="5" height="48" fill={ink} />
+          <rect x="17" y="8" width="30" height="48" fill={mark} fillOpacity=".2" />
+          {[16, 28, 40, 52].map((y) => (
+            <g key={y}>
+              <rect x="24" y={y - 4} width="8" height="4" fill="var(--bad)" />
+              <rect x="32" y={y - 4} width="8" height="4" fill={ink} />
+            </g>
+          ))}
+        </svg>
+      )
     default:
       return <svg {...common} />
   }

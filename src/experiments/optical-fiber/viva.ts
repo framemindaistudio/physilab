@@ -1,0 +1,12 @@
+import type { VivaQuestion } from '@/types/experiment'
+
+export const viva: VivaQuestion[] = [
+  { q: 'On what principle does an optical fibre guide light?', options: ['Refraction', 'Total internal reflection', 'Diffraction', 'Polarisation'], answer: 1, explanation: 'Rays striking the core–cladding boundary beyond the critical angle are totally reflected.', topic: 'Total internal reflection in a fibre' },
+  { q: 'For guiding, the refractive index of the core must be…', options: ['less than the cladding’s', 'greater than the cladding’s', 'equal to the cladding’s', 'equal to 1'], answer: 1, explanation: 'Total internal reflection only occurs going from a denser to a rarer medium: n₁ > n₂.', topic: 'Total internal reflection in a fibre' },
+  { q: 'What is the numerical aperture of a fibre?', options: ['The core diameter', 'The sine of the acceptance angle, √(n₁² − n₂²)', 'The length of the fibre', 'The critical angle'], answer: 1, explanation: 'NA = sin θₐ measures the light-gathering ability of the fibre.', topic: 'Total internal reflection in a fibre' },
+  { q: 'A fibre has n₁ = 1.50 and n₂ = 1.48. Its NA is about…', options: ['0.02', '0.24', '0.50', '1.48'], answer: 1, explanation: '√(1.50² − 1.48²) = √0.0596 ≈ 0.244.', topic: 'Total internal reflection in a fibre' },
+  { q: 'What is the acceptance angle?', options: ['The angle of the fibre bend', 'The maximum angle to the axis at which light entering the fibre is still guided', 'The critical angle', 'The angle of the output spot on the screen'], answer: 1, explanation: 'Rays within ±θₐ of the axis are guided; the full cone angle is 2θₐ.' },
+  { q: 'How is NA found from a single measurement of the spot?', options: ['NA = W/L', 'NA = W/√(4L² + W²)', 'NA = L/W', 'NA = 2L/W'], answer: 1, explanation: 'tan θₐ = W/2L, so sin θₐ = W/√(4L² + W²).', topic: 'Measuring NA from the output cone' },
+  { q: 'Why is the graph of W against L a straight line?', options: ['The fibre is straight', 'The output light spreads in a cone of fixed half-angle θₐ, so W = 2L tan θₐ + core size', 'The laser is monochromatic', 'Because of diffraction'], answer: 1, explanation: 'A cone widens in proportion to the distance from its apex.', topic: 'Measuring NA from the output cone' },
+  { q: 'A larger NA means the fibre…', options: ['accepts light from a wider cone', 'carries light more slowly', 'has a smaller core', 'has more loss'], answer: 0, explanation: 'Larger NA = larger acceptance angle = better light collection (plastic fibres have high NA).' },
+]

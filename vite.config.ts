@@ -6,8 +6,8 @@ import path from 'node:path'
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   build: {
-    // KaTeX and Recharts are large but loaded once; the split per page/apparatus keeps first paint small.
-    chunkSizeWarningLimit: 800,
+    // KaTeX, Recharts and 22 experiments' theory text are large but gzip to ~250 KB; apparatus code is split per experiment.
+    chunkSizeWarningLimit: 1000,
   },
   resolve: {
     alias: { '@': path.resolve(import.meta.dirname, 'src') },

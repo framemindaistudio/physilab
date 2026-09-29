@@ -1,15 +1,19 @@
 import { useState } from 'react'
 import { EXPERIMENTS } from '@/experiments/registry'
 import { CATEGORIES, PLANNED } from '@/data/categories'
+import { SYLLABUS } from '@/data/syllabus'
 import type { CategoryId } from '@/types/experiment'
 import { ExperimentCard } from '@/components/experiment/ExperimentCard'
 import { PageHeader, Tag } from '@/components/ui/misc'
 import { cn } from '@/utils/cn'
 
 export default function Experiments() {
-  const [filter, setFilter] = useState<CategoryId | 'all'>('all')
-  const list = EXPERIMENTS.filter((e) => filter === 'all' || e.category === filter)
-  const planned = PLANNED.filter((p) => filter === 'all' || p.category === filter)
+  const [filter, setFilter] = useState<CategoryId | 'all' | 'syllabus'>('all')
+  const list =
+    filter === 'syllabus'
+      ? SYLLABUS.ids.map((id) => EXPERIMENTS.find((e) => e.id === id)).filter((e): e is (typeof EXPERIMENTS)[number] => !!e)
+      : EXPERIMENTS.filter((e) => filter === 'all' || e.category === filter)
+  const planned = filter === 'syllabus' ? [] : PLANNED.filter((p) => filter === 'all' || p.category === filter)
 
   return (
     <div>
@@ -18,7 +22,7 @@ export default function Experiments() {
       </PageHeader>
 
       <div data-guide="exp-filters" className="mb-6 flex flex-wrap gap-2" role="tablist" aria-label="Filter by area">
-        {[{ id: 'all' as const, label: 'All areas' }, ...CATEGORIES].map((c) => (
+        {[{ id: 'all' as const, label: `All ${EXPERIMENTS.length}` }, { id: 'syllabus' as const, label: `${SYLLABUS.code} lab (${SYLLABUS.ids.length})` }, ...CATEGORIES].map((c) => (
           <button
             key={c.id}
             type="button"
