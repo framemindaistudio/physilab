@@ -42,13 +42,27 @@ Aim & theory → Lab bench → Analysis → Viva → Report
 Dashboard · Experiments · Virtual Lab (free-play bench) · Theory (searchable formula sheet) ·
 My Lab Notebook (all readings, CSV export) · Viva · Progress · About
 
-## First-time guides
+## Rule-based assistants (no API key, run in the browser)
 
-The first visit opens a short welcome guide (with **Skip all guides**), and every section — including each
-experiment stage — shows its own spotlight guide the first time it is opened. Every guide can be skipped
-(**Skip guide**, ✕ or Esc), stepped with the arrow keys, and replayed with the **Page guide** button.
-Guides can be switched off or reset on the About page. Tours live in `src/guide/tours.ts`; a step points
-at an element marked `data-guide="…"`, and steps whose element is not on screen are left out automatically.
+- **Lab Assistant** — on the Lab bench and Analysis pages. Explicit rules check the student's readings and
+  settings: it suggests the next reading (the value farthest from existing ones, with a one-click *Set* button),
+  flags outliers (externally studentised residual above 3.5–4), a poor straight line (R² < 0.98), a non-zero intercept where
+  theory predicts none, a large % error with likely causes, and experiment-specific issues (pendulum amplitude
+  > 10°, light below the photoelectric threshold, missing the diode knee, …). Rules live in
+  `src/assistant/labAssistant.ts` and each experiment's `assistant.ts`.
+- **Ask PHYSILAB** — a chat helper (bottom-right). It answers from a knowledge base built automatically from
+  every experiment's theory, procedure, precautions, model notes and viva explanations, plus a glossary and app
+  help, using BM25 keyword ranking with stemming and synonyms. Calculators work out quick values with the same
+  physics code (pendulum period / g, projectile range, fringe width, photon energy and stopping potential,
+  Ohm's law). While a viva is in progress it won't show viva answers or run the calculators. See `src/assistant/`.
+- **Adaptive viva** — questions answered wrongly last time come first, then new ones, then the rest; a wrong
+  answer links to the theory section to revise.
+
+## Page guides
+
+Press **Page guide** in the sidebar (or **?** on a phone) for a short spotlight tour of the current page. Guides
+never open on their own. Tours live in `src/guide/tours.ts`; a step points at an element marked
+`data-guide="…"`, and steps whose element is not on screen are left out automatically.
 
 ## Tech stack
 
@@ -77,7 +91,8 @@ src/
 │   ├── mechanics/  optics/  electromagnetism/  modern/
 │   ├── constants.ts   CODATA values
 │   └── numerics.ts    RK4, AGM, bisection
-├── guide/           First-time guides: tours per section, spotlight overlay, seen/off state
+├── assistant/       Lab Assistant rules, Ask PHYSILAB search + calculators, adaptive viva
+├── guide/           Page guides: tours per section and the spotlight overlay
 ├── pages/  store/  hooks/  data/  utils/  types/
 ```
 

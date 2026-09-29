@@ -6,6 +6,7 @@ import { linearFit, mean, percentError, stdDev } from '@/utils/stats'
 import { fixed, sig } from '@/utils/format'
 import { num, p, withNoise } from '../shared'
 import { viva } from './viva'
+import { assistant } from './assistant'
 
 const DEVICE_LABEL: Record<Device, string> = {
   resistor: 'Carbon resistor',
@@ -177,7 +178,9 @@ export const ohmsLaw: ExperimentModule = {
 
   analyze: (rows) => {
     const device = String(rows[rows.length - 1].device) as Device
-    const pts = rows.map((r) => ({ x: num(r, 'V'), y: num(r, 'I') })).sort((a, b) => a.x - b.x)
+    // points[i] ↔ rows[i]; the chart sorts its own connecting line.
+    const pts = rows.map((r) => ({ x: num(r, 'V'), y: num(r, 'I') }))
+    const sortedPts = [...pts].sort((a, b) => a.x - b.x)
     const conducting = rows.filter((r) => num(r, 'I') > 0)
     const ratios = conducting.map((r) => num(r, 'ratio'))
 
@@ -236,16 +239,16 @@ export const ohmsLaw: ExperimentModule = {
     }
 
     // Diode
-    if (pts.length < 2) return null
+    if (sortedPts.length < 2) return null
     let knee = NaN
-    for (let i = 1; i < pts.length; i++) {
-      if (pts[i - 1].y < 1 && pts[i].y >= 1) {
-        const f = (1 - pts[i - 1].y) / (pts[i].y - pts[i - 1].y)
-        knee = pts[i - 1].x + f * (pts[i].x - pts[i - 1].x)
+    for (let i = 1; i < sortedPts.length; i++) {
+      if (sortedPts[i - 1].y < 1 && sortedPts[i].y >= 1) {
+        const f = (1 - sortedPts[i - 1].y) / (sortedPts[i].y - sortedPts[i - 1].y)
+        knee = sortedPts[i - 1].x + f * (sortedPts[i].x - sortedPts[i - 1].x)
       }
     }
-    const a = pts[pts.length - 2]
-    const b = pts[pts.length - 1]
+    const a = sortedPts[sortedPts.length - 2]
+    const b = sortedPts[sortedPts.length - 1]
     const rd = b.y !== a.y ? ((b.x - a.x) / (b.y - a.y)) * 1000 : NaN
     const warnings = Number.isFinite(knee) ? [] : ['Take readings on both sides of ~0.6 V (supply 0.5–2 V) to locate the knee voltage.']
     return {
@@ -266,4 +269,5 @@ export const ohmsLaw: ExperimentModule = {
     }
   },
   viva,
+  assistant,
 }

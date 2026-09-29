@@ -29,7 +29,8 @@ export default function ExperimentPage() {
     if (m && (stage ?? 'theory') === 'theory') lab.mark(m.id, 'theoryViewed')
   }, [m, stage])
   useEffect(() => {
-    window.scrollTo({ top: 0 })
+    // A #section link (e.g. from Ask PHYSILAB) scrolls itself; otherwise start each stage at the top.
+    if (!window.location.hash) window.scrollTo({ top: 0 })
   }, [stage])
 
   if (!m) return <NotFound />

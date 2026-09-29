@@ -1,4 +1,5 @@
 import type { ComponentType } from 'react'
+import type { AssistantConfig } from '@/assistant/types'
 
 /**
  * The PHYSILAB experiment contract.
@@ -157,6 +158,8 @@ export interface VivaQuestion {
   options: string[]
   answer: number
   explanation: string
+  /** Theory section heading to revise after a wrong answer (otherwise matched automatically). */
+  topic?: string
 }
 
 export interface ExperimentModule {
@@ -200,8 +203,11 @@ export interface ExperimentModule {
     controlKeys: string[]
   }
 
+  /** `points[i]` must correspond to `rows[i]` so the assistant can point at a specific reading. */
   analyze: (rows: Row[]) => AnalysisOutput | null
   viva: VivaQuestion[]
+  /** Rules for the Lab Assistant (optional; generic checks run without it). */
+  assistant?: AssistantConfig
 }
 
 export interface PlannedExperiment {

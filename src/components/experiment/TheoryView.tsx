@@ -1,3 +1,6 @@
+import { useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
+import { theoryAnchor } from '@/assistant/knowledge'
 import { Cpu } from 'lucide-react'
 import type { ExperimentModule } from '@/types/experiment'
 import { Formula } from '@/components/ui/Formula'
@@ -11,6 +14,20 @@ const ROLE_TONE = {
 } as const
 
 export function TheoryView({ module: m }: { module: ExperimentModule }) {
+  const { hash, key } = useLocation()
+  // Jump to a theory section linked from Ask PHYSILAB or a viva revision hint.
+  useEffect(() => {
+    if (!hash) return
+    let id = hash.slice(1)
+    try {
+      id = decodeURIComponent(id)
+    } catch {
+      // Malformed escape in a hand-edited link: use the raw text.
+    }
+    const t = window.setTimeout(() => document.getElementById(id)?.scrollIntoView({ block: 'start' }), 50)
+    return () => window.clearTimeout(t)
+  }, [hash, key])
+
   return (
     <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
       <div className="space-y-6">
@@ -29,7 +46,12 @@ export function TheoryView({ module: m }: { module: ExperimentModule }) {
         </section>
 
         {m.theory.map((s, i) => (
-          <section key={s.heading} data-guide={i === 0 ? 'theory-section' : undefined} className="panel p-5 sm:p-6">
+          <section
+            key={s.heading}
+            id={theoryAnchor(s.heading)}
+            data-guide={i === 0 ? 'theory-section' : undefined}
+            className="panel scroll-mt-24 p-5 sm:p-6"
+          >
             <SectionTitle>{s.heading}</SectionTitle>
             <div className="prose-lab max-w-[68ch] text-ink-2">
               {s.body.map((p) => (

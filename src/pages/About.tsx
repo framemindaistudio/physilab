@@ -1,10 +1,6 @@
 import { EXPERIMENTS } from '@/experiments/registry'
 import { PageHeader } from '@/components/ui/misc'
-import { Button } from '@/components/ui/Button'
-import { Switch } from '@/components/simulation/ParameterPanel'
 import { CREDIT } from '@/components/layout/CreditFooter'
-import { guides, useGuideState } from '@/guide/guideStore'
-import { useState } from 'react'
 
 const STACK = [
   ['Interface', 'React 19 + TypeScript, Vite, Tailwind CSS'],
@@ -18,9 +14,6 @@ const STACK = [
 const CHAIN = ['Formula', 'Variables', 'Units', 'Physical constraints', 'Simulation model', 'Expected result']
 
 export default function About() {
-  const guideState = useGuideState()
-  const [resetDone, setResetDone] = useState(false)
-
   return (
     <div className="max-w-3xl">
       <PageHeader eyebrow="About" title="About PHYSILAB">
@@ -89,36 +82,12 @@ export default function About() {
           </p>
         </section>
 
-        <section data-guide="about-guides" aria-labelledby="guides-heading">
-          <h2 id="guides-heading" className="mb-3 font-display text-xl font-semibold tracking-tight text-ink">
-            Guides
-          </h2>
-          <div className="panel divide-y divide-line">
-            <div className="flex items-center justify-between gap-4 px-4 py-3">
-              <label htmlFor="guides-on" className="text-sm text-ink">
-                Show a guide the first time I open each section
-                <span className="block text-xs text-ink-3">You can always replay a page’s guide with the Page guide button.</span>
-              </label>
-              <Switch id="guides-on" checked={!guideState.off} onChange={(on) => guides.setOff(!on)} />
-            </div>
-            <div className="flex flex-wrap items-center justify-between gap-4 px-4 py-3">
-              <p className="text-sm text-ink">
-                Reset guides
-                <span className="block text-xs text-ink-3">Every section shows its guide again, starting with the welcome guide.</span>
-              </p>
-              <Button
-                size="sm"
-                onClick={() => {
-                  guides.reset()
-                  setResetDone(true)
-                }}
-              >
-                Reset guides
-              </Button>
-            </div>
-          </div>
-          <p role="status" aria-live="polite" className="mt-2 min-h-[1.25rem] text-xs text-ok">
-            {resetDone && !guideState.off && 'Guides reset. Each section will show its guide again the first time you open it.'}
+        <section>
+          <h2 className="mb-2 font-display text-xl font-semibold tracking-tight text-ink">Need a hand?</h2>
+          <p>
+            Press <span className="font-medium text-ink">Page guide</span> in the sidebar (or <span className="font-medium text-ink">?</span> at the
+            top on a phone) for a short tour of whatever page you are on, or ask a question with{' '}
+            <span className="font-medium text-ink">Ask PHYSILAB</span> in the corner.
           </p>
         </section>
       </div>

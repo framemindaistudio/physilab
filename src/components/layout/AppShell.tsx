@@ -22,6 +22,7 @@ import { useGuide } from '@/guide/GuideProvider'
 import { TOURS } from '@/guide/tours'
 import { cn } from '@/utils/cn'
 import { CreditFooter } from './CreditFooter'
+import { AskPhysilab } from '@/components/assistant/AskPhysilab'
 
 const NAV: { to: string; label: string; icon: LucideIcon; end?: boolean }[] = [
   { to: '/dashboard', label: 'Dashboard', icon: Gauge },
@@ -78,14 +79,14 @@ function ThemeSwitch() {
 
 /** Replays the first-time guide for the page that is open. */
 function GuideButton({ compact = false }: { compact?: boolean }) {
-  const { section, replay } = useGuide()
+  const { section, open } = useGuide()
   const available = !!(section && TOURS[section])
   if (compact) {
     return (
       <button
         type="button"
         data-guide="guide-button"
-        onClick={replay}
+        onClick={open}
         disabled={!available}
         className="grid h-9 w-9 place-items-center rounded-lg text-ink-2 hover:bg-panel-2 disabled:opacity-40"
         aria-label="Show the guide for this page"
@@ -99,7 +100,7 @@ function GuideButton({ compact = false }: { compact?: boolean }) {
     <button
       type="button"
       data-guide="guide-button"
-      onClick={replay}
+      onClick={open}
       disabled={!available}
       className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-ink-2 transition-colors hover:bg-panel-2 hover:text-ink disabled:opacity-40"
     >
@@ -137,7 +138,7 @@ function NavItems({ onNavigate }: { onNavigate?: () => void }) {
 export function AppShell({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false)
   const { pathname } = useLocation()
-  const { open: guideOpen } = useGuide()
+  const { isOpen: guideOpen } = useGuide()
   useEffect(() => setOpen(false), [pathname])
   // A guide spotlights the page, so the mobile menu must not sit on top of it.
   useEffect(() => {
@@ -203,6 +204,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         </main>
         <CreditFooter />
       </div>
+      <AskPhysilab />
     </div>
   )
 }

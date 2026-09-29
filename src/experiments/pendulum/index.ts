@@ -8,6 +8,7 @@ import { linearFit, mean, percentError } from '@/utils/stats'
 import { fixed, sig } from '@/utils/format'
 import { num, p, withNoise } from '../shared'
 import { viva } from './viva'
+import { assistant } from './assistant'
 
 const FOUR_PI2 = 4 * Math.PI * Math.PI
 const N_OSC = 10
@@ -188,4 +189,5 @@ export const pendulum: ExperimentModule = {
     }
   },
   viva,
+  assistant,
 }

@@ -7,6 +7,7 @@ import { linearFit, mean, percentError } from '@/utils/stats'
 import { fixed, sig } from '@/utils/format'
 import { num, p, withNoise } from '../shared'
 import { viva } from './viva'
+import { assistant } from './assistant'
 
 export const projectile: ExperimentModule = {
   id: 'projectile',
@@ -188,4 +189,5 @@ export const projectile: ExperimentModule = {
     }
   },
   viva,
+  assistant,
 }

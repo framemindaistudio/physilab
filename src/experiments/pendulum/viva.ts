@@ -51,12 +51,14 @@ export const viva: VivaQuestion[] = [
     options: ['0.25 m', '0.50 m', '0.99 m', '1.99 m'],
     answer: 2,
     explanation: 'L = gT²/4π² = 9.81 × 4 / 39.48 ≈ 0.994 m.',
+    topic: 'Period and the T²–L graph',
   },
   {
     q: 'The same pendulum is taken to the Moon (g ≈ g_Earth/6). Its period becomes…',
     options: ['6 times longer', '√6 ≈ 2.45 times longer', '6 times shorter', 'unchanged'],
     answer: 1,
     explanation: 'T ∝ 1/√g. Reducing g by a factor 6 increases T by √6 ≈ 2.45.',
+    topic: 'Period and the T²–L graph',
   },
   {
     q: 'Why do we time 10 or 20 oscillations rather than one?',
@@ -68,5 +70,6 @@ export const viva: VivaQuestion[] = [
     ],
     answer: 1,
     explanation: 'Reaction time adds a roughly fixed error (≈0.1 s) to each timing. Dividing a 20 s reading by 10 cuts its effect on T by a factor of 10.',
+    topic: 'Period and the T²–L graph',
   },
 ]

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { ArrowLeft, ArrowRight, X } from 'lucide-react'
-import { findTarget, stepBody, WELCOME_ID, type GuideStep, type Tour } from './tours'
+import { findTarget, stepBody, type GuideStep, type Tour } from './tours'
 import { cn } from '@/utils/cn'
 
 interface Rect {
@@ -33,35 +33,18 @@ function scrollToTarget(el: HTMLElement) {
   window.scrollTo({ top: Math.max(0, top), behavior: reducedMotion() ? 'auto' : 'smooth' })
 }
 
-export function GuideOverlay({
-  tour,
-  onDone,
-  onSkip,
-  onSkipAll,
-}: {
-  tour: Tour
-  /** Finished the last step. `real` is false when only a placeholder was shown. */
-  onDone: (real: boolean) => void
-  /** Skipped this guide. */
-  onSkip: (real: boolean) => void
-  /** Turned off all first-time guides. */
-  onSkipAll: () => void
-}) {
+export function GuideOverlay({ tour, onClose }: { tour: Tour; onClose: () => void }) {
   // Resolve the steps that exist in the current layout once, when the guide opens.
-  const { steps, real } = useMemo<{ steps: GuideStep[]; real: boolean }>(() => {
+  const steps = useMemo<GuideStep[]>(() => {
     const available = tour.steps.filter((s) => !s.target || findTarget(s.target))
-    if (available.length) return { steps: available, real: true }
-    return {
-      steps: [tour.fallback ?? { title: tour.label, body: 'This guide has nothing to point at on this screen yet.' }],
-      real: false,
-    }
+    if (available.length) return available
+    return [tour.fallback ?? { title: tour.label, body: 'There is nothing on this screen for the guide to point at yet.' }]
   }, [tour])
 
   const [index, setIndex] = useState(0)
   const step = steps[Math.min(index, steps.length - 1)]
   const body = stepBody(step)
   const last = index >= steps.length - 1
-  const isWelcome = tour.id === WELCOME_ID
 
   const [rect, setRect] = useState<Rect | null>(null)
   const [cardH, setCardH] = useState(220)
@@ -123,11 +106,11 @@ export function GuideOverlay({
   }, [index])
 
   const next = useCallback(() => {
-    if (last) onDone(real)
+    if (last) onClose()
     else setIndex((i) => i + 1)
-  }, [last, onDone, real])
+  }, [last, onClose])
   const back = useCallback(() => setIndex((i) => Math.max(0, i - 1)), [])
-  const skip = useCallback(() => onSkip(real), [onSkip, real])
+  const skip = onClose
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -271,14 +254,12 @@ export function GuideOverlay({
         )}
 
         <div className="mt-4 flex shrink-0 flex-wrap items-center justify-between gap-2">
-          {isWelcome && index === 0 ? (
-            <button type="button" onClick={onSkipAll} className="text-sm text-ink-3 underline-offset-2 hover:text-ink hover:underline">
-              Skip all guides
-            </button>
-          ) : (
+          {steps.length > 1 && !last ? (
             <button type="button" onClick={skip} className="text-sm text-ink-3 underline-offset-2 hover:text-ink hover:underline">
               Skip guide
             </button>
+          ) : (
+            <span />
           )}
           <div className="flex gap-2">
             {index > 0 && (
@@ -296,7 +277,7 @@ export function GuideOverlay({
               onClick={next}
               className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-prussian px-4 text-sm font-medium text-[var(--paper)] hover:bg-prussian-strong"
             >
-              {isWelcome && index === 0 ? 'Show me around' : last ? 'Got it' : 'Next'}
+              {last ? 'Got it' : 'Next'}
               {!last && <ArrowRight size={14} />}
             </button>
           </div>

@@ -6,6 +6,7 @@ import { linearFit, percentError } from '@/utils/stats'
 import { fixed, sig } from '@/utils/format'
 import { num, p, withNoise } from '../shared'
 import { viva } from './viva'
+import { assistant } from './assistant'
 
 const MICROSCOPE_ZERO = 20 // mm: main-scale position of the central fringe
 
@@ -177,4 +178,5 @@ export const doubleSlit: ExperimentModule = {
     }
   },
   viva,
+  assistant,
 }

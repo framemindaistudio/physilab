@@ -7,6 +7,7 @@ import { cn } from '@/utils/cn'
 import { Button } from '@/components/ui/Button'
 import { ParameterPanel, Switch } from '@/components/simulation/ParameterPanel'
 import { ObservationTable } from './ObservationTable'
+import { LabAssistantPanel } from '@/components/assistant/LabAssistantPanel'
 
 const SPEEDS = [0.1, 0.25, 0.5, 1, 2]
 
@@ -149,6 +150,18 @@ export function LabBench({ module: m, showTable = true }: { module: ExperimentMo
           </div>
         ))}
       </section>
+
+      {showTable && (
+        <LabAssistantPanel
+          module={m}
+          where="bench"
+          params={params}
+          onApply={(patch) => {
+            setParams((prev) => ({ ...prev, ...patch }))
+            setStatus(null)
+          }}
+        />
+      )}
 
       {showTable && (
         <section data-guide="bench-table" className="panel p-4 sm:p-5" aria-labelledby={`obs-${m.id}`}>

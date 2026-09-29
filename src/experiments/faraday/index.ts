@@ -5,6 +5,7 @@ import { linearFit, mean, percentError } from '@/utils/stats'
 import { fixed, sig } from '@/utils/format'
 import { num, p, withNoise } from '../shared'
 import { viva } from './viva'
+import { assistant } from './assistant'
 
 export const faraday: ExperimentModule = {
   id: 'faraday',
@@ -196,4 +197,5 @@ export const faraday: ExperimentModule = {
     }
   },
   viva,
+  assistant,
 }

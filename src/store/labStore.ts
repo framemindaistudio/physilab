@@ -10,7 +10,10 @@ import { uid } from '@/utils/random'
 export interface VivaAttempt {
   score: number
   total: number
+  /** Chosen option for each question, in the order the questions were asked. */
   answers: number[]
+  /** Question indices in the order asked (adaptive viva); absent means the natural order. */
+  order?: number[]
   completedAt: string
 }
 

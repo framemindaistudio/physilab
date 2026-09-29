@@ -10,6 +10,8 @@ import { ButtonLink } from '@/components/ui/Button'
 import { ObservationTable } from './ObservationTable'
 import { ResultCard } from './ResultCard'
 import { useAnalysis } from './useAnalysis'
+import { defaultParams } from './LabBench'
+import { LabAssistantPanel } from '@/components/assistant/LabAssistantPanel'
 
 export function AnalysisView({ module: m }: { module: ExperimentModule }) {
   const record = useExperimentRecord(m.id)
@@ -78,6 +80,8 @@ export function AnalysisView({ module: m }: { module: ExperimentModule }) {
           ))}
         </section>
       </div>
+
+      <LabAssistantPanel module={m} where="analysis" params={{ ...defaultParams(m), ...(record.params ?? {}) }} />
 
       {result.warnings.length > 0 && (
         <div className="space-y-2">

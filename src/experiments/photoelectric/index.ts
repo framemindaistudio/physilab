@@ -7,6 +7,7 @@ import { linearFit, percentError } from '@/utils/stats'
 import { fixed, sig, texSci } from '@/utils/format'
 import { num, p, withNoise } from '../shared'
 import { viva } from './viva'
+import { assistant } from './assistant'
 
 export const photoelectric: ExperimentModule = {
   id: 'photoelectric',
@@ -194,5 +195,6 @@ export const photoelectric: ExperimentModule = {
     }
   },
   viva,
+  assistant,
 }
 

@@ -68,5 +68,6 @@ export const viva: VivaQuestion[] = [
     ],
     answer: 1,
     explanation: 'Once every photoelectron reaches the anode, raising V cannot increase the current further; only more photons (more intensity) can.',
+    topic: 'Intensity and saturation current',
   },
 ]

@@ -2,6 +2,7 @@ import { GraduationCap } from 'lucide-react'
 import { EXPERIMENTS } from '@/experiments/registry'
 import { useLab } from '@/store/labStore'
 import { bestViva } from '@/store/progress'
+import { planViva } from '@/assistant/adaptiveViva'
 import { categoryLabel } from '@/data/categories'
 import { ButtonLink } from '@/components/ui/Button'
 import { Meter, PageHeader } from '@/components/ui/misc'
@@ -14,12 +15,13 @@ export default function Viva() {
   return (
     <div>
       <PageHeader eyebrow="Viva" title="Viva voce practice">
-        {totalQ} questions across {EXPERIMENTS.length} experiments, each with an explanation. Your best score for each set is kept.
+        {totalQ} questions across {EXPERIMENTS.length} experiments, each with an explanation. Questions you get wrong come back first next time, and your best score is kept.
       </PageHeader>
       <div data-guide="viva-cards" className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
         {EXPERIMENTS.map((m, i) => {
           const r = state.experiments[m.id]
           const best = r ? bestViva(r) : undefined
+          const toRevise = r ? planViva(m, r.vivaAttempts).filter((p) => p.status === 'missed').length : 0
           return (
             <article key={m.id} className="panel flex flex-col p-5">
               <div className="flex items-start justify-between gap-3">
@@ -32,6 +34,11 @@ export default function Viva() {
                 <Meter value={best ?? 0} tone={best !== undefined && best >= 0.7 ? 'ok' : 'sodium'} />
                 <span className="readout shrink-0 text-xs text-ink-2">{best === undefined ? 'not taken' : `best ${Math.round(best * 100)}%`}</span>
               </div>
+              {toRevise > 0 && (
+                <p className="mt-2 text-xs text-bad">
+                  {toRevise} question{toRevise === 1 ? '' : 's'} to revise
+                </p>
+              )}
               <ButtonLink data-guide={i === 0 ? 'viva-start' : undefined} to={`/experiments/${m.id}/viva`} variant={best === undefined ? 'primary' : 'secondary'} className="mt-5 self-start" size="sm">
                 <GraduationCap size={14} /> {best === undefined ? 'Start viva' : 'Retake viva'}
               </ButtonLink>
