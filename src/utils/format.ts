@@ -25,11 +25,11 @@ export function sci(v: number, figures = 3): string {
 
 /** LaTeX scientific notation, e.g. 6.63 \times 10^{-34}. */
 export function texSci(v: number, figures = 3): string {
-  if (!Number.isFinite(v)) return '\text{—}'
+  if (!Number.isFinite(v)) return '\\text{—}'
   const abs = Math.abs(v)
   if (abs !== 0 && (abs >= 1e5 || abs < 1e-3)) {
     const [m, e] = v.toExponential(figures - 1).split('e')
-    return `${m}\times10^{${Number(e)}}`
+    return `${m}\\times10^{${Number(e)}}`
   }
   return Number(v.toPrecision(figures)).toString()
 }

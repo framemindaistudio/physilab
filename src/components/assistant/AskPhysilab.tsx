@@ -203,7 +203,7 @@ function BotReply({
         <p className="font-display text-sm font-semibold text-ink">{c.title}</p>
         <div className="mt-1.5 space-y-1 overflow-x-auto text-ink">
           {c.steps.map((s) => (
-            <Formula key={s} tex={s} block className="text-[0.95em]" />
+            <Formula key={s} tex={s} block className="text-[0.86em]" />
           ))}
         </div>
         {c.note && <p className="mt-1.5 text-xs text-ink-2">{c.note}</p>}
@@ -228,7 +228,7 @@ function BotReply({
       {doc.formulas.length > 0 && (
         <div className="mt-2 space-y-1 overflow-x-auto text-ink">
           {doc.formulas.slice(0, 3).map((f) => (
-            <Formula key={f} tex={f} block className="text-[0.95em]" />
+            <Formula key={f} tex={f} block className="text-[0.86em]" />
           ))}
         </div>
       )}

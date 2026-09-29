@@ -8,7 +8,9 @@ PHYSILAB is a virtual laboratory in which a student can perform Engineering Phys
 set real experimental parameters on live apparatus, take readings with realistic instrument error, plot a
 least-squares graph, calculate the result with its uncertainty, take a viva, and generate a lab report.
 
-## Experiments (Phase 1)
+## Experiments (22)
+
+All ten experiments of the **1BPHS102C** first-year lab syllabus are included (marked ●).
 
 | # | Experiment | Area | What the student determines | Physics model |
 |---|---|---|---|---|
@@ -18,6 +20,25 @@ least-squares graph, calculate the result with its uncertainty, take a viva, and
 | 04 | Faraday's Law | Electromagnetism | (dΦ/dz)max from ε_peak vs N·v; Φmax from ∫ε dt | Exact dipole flux through a coaxial loop, ε = −N v dΦ/dz |
 | 05 | Young's Double Slit | Optics | λ from β vs D/d | Fraunhofer cos² × sinc² intensity; dark fringes located numerically |
 | 06 | Photoelectric Effect | Modern Physics | h and φ from V₀ vs ν | Einstein equation; retarding-field photocurrent; V₀ found by stepping the anode voltage |
+| 07 | Newton's Rings | Optics | λ from D² vs n | Reflected intensity sin²(πr²/λR) per pixel; rings found as intensity minima |
+| 08 | Diffraction Grating | Optics | λ of mercury lines from sin θ vs n | Grating equation; spectrometer readings on both sides with a 1′ least count |
+| 09 | Malus' Law | Optics | I₀ from I vs cos²θ | I = I₀ cos²θ plus a stray-light background |
+| 10 | Sonometer | Waves & Acoustics | v and μ from L vs 1/f | Driven-oscillator response of the wire (Q = 30); resonance at the response peak |
+| 11 | RC Circuit | Electricity | τ and C from ln V vs t | V = V₀ e^(−t/RC) with timing and voltmeter error |
+| 12 ● | Planck's Constant using LEDs | Modern Physics | h from V_th vs 1/λ | Smoothed LED I–V; threshold extrapolated from the steep part, as on graph paper |
+| 13 ● | Energy Gap of a Semiconductor Diode | Semiconductors | E_g from ln(I_s/T³) vs 1/T | I_s = C T³ e^(−E_g/kT); shows the bias from ignoring T³ |
+| 14 | Hall Effect | Semiconductors | R_H, carrier type and n from V_H vs I·B | V_H = IB/(nqt); carriers drift under the same Lorentz force |
+| 15 ● | Fermi Energy of a Conductor | Modern Physics | E_F and v_F from R vs T | Free-electron resistivity of a copper coil |
+| 16 ● | Wavelength of a Laser | Optics | λ from sin θ vs n | Grating spots on a screen: x_n = D tan(sin⁻¹(nλ/d)) |
+| 17 ● | Numerical Aperture of an Optical Fibre | Optics | NA and acceptance angle from W vs L | Spot size from √(n₁² − n₂²) and the core diameter |
+| 18 ● | Energy Gap by Four-Probe Method | Semiconductors | E_g from ln ρ vs 1/T | Intrinsic ρ(T) with the G₇ thin-slab correction |
+| 19 ● | Series LCR Frequency Response | Electromagnetism | f₀, bandwidth and Q from I vs f | Series impedance; peak and half-power points found from the readings only |
+| 20 ● | Passive Components in a Black Box | Electricity | Which of R, L, C, and its value, from Z vs f | Z = R, √(r² + (2πfL)²) or 1/(2πfC); best of three models chosen |
+| 21 ● | Photodiode I–V and Responsivity | Semiconductors | ℛ and quantum efficiency from I vs P | Photodiode equation with η(λ) and 2 nA dark current |
+| 22 ● | Dielectric Constant by Charging and Discharging | Electromagnetism | κ from ln V vs t | C = κε₀A/d film capacitor through a known resistor |
+
+With simulated instrument error switched on, every experiment's own analysis lands within **2 %** of the accepted
+value (median 0.16 %).
 
 ## The rule: nothing is faked
 
@@ -84,19 +105,20 @@ src/
 │   ├── experiment/    LabBench, ObservationTable, AnalysisView, VivaQuiz, LabReport, TheoryView
 │   └── charts/        FitChart (least-squares graph)
 ├── experiments/
-│   ├── pendulum/  projectile/  ohms-law/  faraday/  double-slit/  photoelectric/
+│   ├── pendulum/  projectile/  …  dielectric-constant/   (one folder per experiment)
 │   ├── registry.ts    ← the list of experiments
 │   └── shared.ts
 ├── physics/
-│   ├── mechanics/  optics/  electromagnetism/  modern/
+│   ├── mechanics/  optics/  electromagnetism/  modern/  waves/  semiconductor/
 │   ├── constants.ts   CODATA values
 │   └── numerics.ts    RK4, AGM, bisection
 ├── assistant/       Lab Assistant rules, Ask PHYSILAB search + calculators, adaptive viva
 ├── guide/           Page guides: tours per section and the spotlight overlay
 ├── pages/  store/  hooks/  data/  utils/  types/
+tools/print/          Posters, slide deck and screenshots (see below)
 ```
 
-## Adding experiment 07
+## Adding experiment 23
 
 1. Put the physics in `src/physics/<area>/<name>.ts` as pure functions.
 2. Create `src/experiments/<id>/` with an `Apparatus.tsx` (canvas or SVG) and an `index.ts` exporting an
@@ -120,6 +142,20 @@ Import the repository in Vercel. The framework preset is detected as **Vite**; b
 output directory `dist`. `vercel.json` rewrites all routes to `index.html` so deep links such as
 `/experiments/faraday/lab` work. No environment variables are needed.
 
+## Posters and slides
+
+`tools/print` builds the print material from the running app (start `npm run dev` first):
+
+```bash
+cd tools/print && npm install
+node screens.mjs     # screenshots of every page and apparatus → deliverables/screens
+node results.mjs     # each experiment's own analysis → deliverables/screens/results.json
+node posters.mjs     # two A3 posters → deliverables/*.pdf and *.png
+node deck.mjs        # slide deck → deliverables/PHYSILAB-Presentation.pptx (+ PNG preview)
+```
+
+It needs Google Chrome installed. `deliverables/` is not committed.
+
 ## Credits
 
 Made by: **Prathiksha D** (1st year Engineering Student)
@@ -127,5 +163,4 @@ Made by: **Prathiksha D** (1st year Engineering Student)
 ## Roadmap
 
 - **Phase 2** — Supabase: authentication → student profile → experiment attempts → lab notebook → viva scores → progress.
-- **More experiments** — 24 planned across all six areas (Newton's rings, diffraction grating, LCR resonance,
-  Hall effect, band gap, Planck's constant with LEDs, …), listed in `src/data/categories.ts`.
+- **More experiments** — 15 more planned across all six areas, listed in `src/data/categories.ts`.
